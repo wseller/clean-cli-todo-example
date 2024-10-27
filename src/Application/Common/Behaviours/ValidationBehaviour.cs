@@ -8,14 +8,13 @@ namespace CleanCli.Todo.Application.Common.Behaviours
     using MediatR;
     using ValidationException = CleanCli.Todo.Application.Common.Exceptions.ValidationException;
 
-    public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> validators;
 
         public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators) => this.validators = validators;
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if (this.validators.Any())
             {
